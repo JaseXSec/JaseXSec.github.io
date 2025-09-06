@@ -35,18 +35,17 @@ I scanned 9 popular web apps and tools using **HeaderHawk** — these aren't ban
 ![Image Description]({{ '/assets/images/header-hawk/Pasted image 20250528204815.png' | relative_url }})
 ### Here’s what surprised me:
 
-| Website        | Content-Security-Policy | X-Frame-Options | HSTS                  | Referrer-Policy |
-| -------------- | ----------------------- | --------------- | --------------------- | --------------- |
-| notion.so      | Missing                 | Missing         | Present               | Missing         |
-| intercom.com   | Missing                 | Missing         | Present               | Missing         |
-| calendly.com   | Missing                 | Missing         | Missing               | Missing         |
-| techcrunch.com | Partial CSP             | SAMEORIGIN      | Very short lifespan   | Present (basic) |
-| replit.com     | Missing                 | Missing         | Present               | Missing         |
-| stackshare.io  | Missing                 | SAMEORIGIN      | HSTS with `max-age=0` | Good            |
-| npmjs.com      | Limited CSP             | DENY            | Present               | Missing         |
-| medium.com     | Frame restriction only  | Missing         | Present               | Missing         |
-| trello.com     | Missing                 | SAMEORIGIN      | Present               | Good            |
-|                |                         |                 |                       |                 |
+| Website | Content-Security-Policy | X-Frame-Options | HSTS | Referrer-Policy |
+|---------|------------------------|-----------------|------|-----------------|
+| notion.so | Missing | Missing | Present | Missing |
+| intercom.com | Missing | Missing | Present | Missing |
+| calendly.com | Missing | Missing | Missing | Missing |
+| techcrunch.com | Partial CSP | SAMEORIGIN | Very short lifespan | Present (basic) |
+| replit.com | Missing | Missing | Present | Missing |
+| stackshare.io | Missing | SAMEORIGIN | HSTS with `max-age=0` | Good |
+| npmjs.com | Limited CSP | DENY | Present | Missing |
+| medium.com | Frame restriction only | Missing | Present | Missing |
+| trello.com | Missing | SAMEORIGIN | Present | Good |
 ![Image Description]({{ '/assets/images/header-hawk/Pasted image 20250528204908.png' | relative_url }})
 doesn't that cli tool just look so good? 😉
 
