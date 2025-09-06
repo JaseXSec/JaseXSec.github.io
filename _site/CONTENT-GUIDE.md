@@ -104,7 +104,7 @@ If the conversion script doesn't work:
 1. **Copy** your `.md` file to `_posts/YYYY-MM-DD-title.md`
 2. **Create folder** `assets/images/your-post-name/`
 3. **Copy images** to that folder
-4. **Find & Replace** in your markdown:
+4. **Find & Replace** in your markdown:**
    - Find: `![[`
    - Replace: `![Image Description]({{ '/assets/images/your-post-name/`
    - Find: `]]`
