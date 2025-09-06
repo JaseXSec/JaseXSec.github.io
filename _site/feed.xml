@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-09-06T16:27:41-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Jase Jourdain - Cybersecurity Portfolio</title><subtitle>Cybersecurity professional specializing in penetration testing, incident response, and security architecture. Sharing insights and research in the field of information security.</subtitle><entry><title type="html">Monitoring DNS Cache with VirusTotal – Windows VM Threat Watch</title><link href="http://localhost:4000/project/2025/09/05/dns-cache-monitoring/" rel="alternate" type="text/html" title="Monitoring DNS Cache with VirusTotal – Windows VM Threat Watch" /><published>2025-09-05T19:00:00-05:00</published><updated>2025-09-05T19:00:00-05:00</updated><id>http://localhost:4000/project/2025/09/05/dns-cache-monitoring</id><content type="html" xml:base="http://localhost:4000/project/2025/09/05/dns-cache-monitoring/"><![CDATA[<p>A lightweight monitoring tool that periodically scans a Windows workstation’s DNS cache, extracts domains/IPs, checks them against VirusTotal, and alerts/logs on suspicious findings. I built it to add a simple, host-level tripwire for malware/phishing activity in home-lab and small-biz environments.</p>
+
+<h2 id="key-features">Key Features</h2>
+
+<ol>
+  <li><strong>DNS Cache Collection</strong>: Periodically collects DNS cache entries using the <code class="language-plaintext highlighter-rouge">ipconfig /displaydns</code> command on a Windows workstation.</li>
+  <li><strong>Malicious IP/Domain Detection</strong>: Integrates with the VirusTotal API to check cached IPs and domains against a vast database of known malicious entities.</li>
+  <li><strong>Automated Alerts</strong>: Sends real-time alerts via email (or other notification systems) when a malicious entry is detected.</li>
+  <li><strong>Logging and Reporting</strong>: Maintains a log file for all DNS cache scans, including details of detected threats, for future analysis and auditing.</li>
+  <li><strong>Task Automation</strong>: Uses Windows Task Scheduler to run the monitoring script at regular intervals, ensuring continuous protection.</li>
+</ol>
+
+<h2 id="technologies-used">Technologies Used</h2>
+
+<ul>
+  <li><strong>Python</strong>: For automating DNS cache extraction, API integration, and alert generation.</li>
+  <li><strong>VirusTotal API</strong>: To verify IP addresses and domains against a database of known malicious entities.</li>
+  <li><strong>Windows Task Scheduler</strong>: To automate periodic script execution.</li>
+  <li><strong>Proxmox</strong>: Hosting the Windows VM for running the monitoring system.</li>
+</ul>
+
+<h2 id="project-workflow">Project Workflow</h2>
+
+<ol>
+  <li><strong>Data Collection</strong>: The script runs the <code class="language-plaintext highlighter-rouge">ipconfig /displaydns</code> command to extract DNS cache entries from the Windows system.</li>
+  <li><strong>Data Parsing</strong>: Parses the output to extract relevant IP addresses and domain names.</li>
+  <li><strong>Threat Analysis</strong>: Queries each IP/domain through the VirusTotal API to check for malicious activity.</li>
+  <li><strong>Alert Mechanism</strong>: If a malicious entity is detected, an alert is triggered via email or logged for review.</li>
+  <li><strong>Continuous Monitoring</strong>: Automates the process with Task Scheduler to ensure regular scans.</li>
+</ol>
+
+<h2 id="use-cases">Use Cases</h2>
+
+<ul>
+  <li><strong>Network Security</strong>: Helps identify potential cyber threats at the DNS level within a local network.</li>
+  <li><strong>Cybersecurity Research</strong>: Assists researchers in monitoring and analyzing DNS activity.</li>
+  <li><strong>Personal or Small Business Protection</strong>: Provides an additional layer of defense for individuals or small organizations against cyber threats.</li>
+</ul>
+
+<p>This project demonstrates practical skills in cybersecurity, Python scripting, API integration, and automation. It can be expanded with additional features such as Slack/Telegram notifications, data visualization dashboards, or integration with SIEM systems for enterprise-level monitoring.</p>
+
+<h2 id="lets-dig-in-shall-we">Let’s dig in, shall we?</h2>
+
+<p>Our first step in this project is creating a windows VM that will act as our DNS catcher. This can be done in many ways, but for my case we will be using a VM within my Proxmox cluster I have set up on my local network. Feel free to use any hypervisor you have available to you.</p>
+
+<p><img src="/assets/images/dns-cache-monitoring/Pasted%20image%2020250208133932.png" alt="VM Resource Allocation" />
+<em>Figure 1: VM resource allocation showing minimal requirements</em></p>
+
+<p>As you can see, this VM does not have to be heavily resourced.</p>
+
+<p>Next, let get python installed on our VM,</p>
+
+<p><img src="/assets/images/dns-cache-monitoring/Pasted%20image%2020250208135950.png" alt="Python Installation" />
+<em>Figure 2: Installing Python on the Windows VM</em></p>
+
+<p>Once python is installed, let get any required dependencies installed as well. In this project, we need to install the requests dependency. this can be done with <code class="language-plaintext highlighter-rouge">pip install requests</code></p>
+
+<p><img src="/assets/images/dns-cache-monitoring/Pasted%20image%2020250208140650.png" alt="Installing Dependencies" />
+<em>Figure 3: Installing the requests dependency</em></p>
+
+<p>Next we need to create a script in python for extracting DNS cache using <code class="language-plaintext highlighter-rouge">ipconfig /displaydns</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">subprocess</span>
+
+<span class="k">def</span> <span class="nf">get_dns_cache</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">([</span><span class="sh">"</span><span class="s">ipconfig</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">/displaydns</span><span class="sh">"</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">.</span><span class="n">stdout</span>
+
+<span class="k">def</span> <span class="nf">parse_dns_cache</span><span class="p">(</span><span class="n">dns_data</span><span class="p">):</span>
+    <span class="n">entries</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_entry</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">dns_data</span><span class="p">.</span><span class="nf">splitlines</span><span class="p">():</span>
+        <span class="k">if</span> <span class="sh">"</span><span class="s">Record Name</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">current_entry</span><span class="p">[</span><span class="sh">"</span><span class="s">record_name</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">:</span><span class="sh">"</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nf">strip</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="sh">"</span><span class="s">Record Type</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">current_entry</span><span class="p">[</span><span class="sh">"</span><span class="s">record_type</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">:</span><span class="sh">"</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nf">strip</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="sh">"</span><span class="s">Time To Live</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">current_entry</span><span class="p">[</span><span class="sh">"</span><span class="s">ttl</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">:</span><span class="sh">"</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nf">strip</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="sh">"</span><span class="s">Data</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">current_entry</span><span class="p">[</span><span class="sh">"</span><span class="s">data</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">:</span><span class="sh">"</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nf">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">current_entry</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">"</span><span class="s">record_name</span><span class="sh">"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">current_entry</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">"</span><span class="s">data</span><span class="sh">"</span><span class="p">):</span>
+            <span class="n">entries</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">current_entry</span><span class="p">)</span>
+            <span class="n">current_entry</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">return</span> <span class="n">entries</span>
+
+<span class="c1"># Test the DNS cache extraction
+</span><span class="n">dns_data</span> <span class="o">=</span> <span class="nf">get_dns_cache</span><span class="p">()</span>
+<span class="n">dns_entries</span> <span class="o">=</span> <span class="nf">parse_dns_cache</span><span class="p">(</span><span class="n">dns_data</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">dns_entries</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>What does this code do?</p>
+<ul>
+  <li>Fetches cache using the <code class="language-plaintext highlighter-rouge">ipconfig /displaydns</code> command</li>
+  <li>Parses the data to extract IP addresses or domains for analysis</li>
+</ul>
+
+<p>Next we want to create a script for the VirusTotal API integration:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+
+<span class="n">VIRUSTOTAL_API_KEY</span> <span class="o">=</span> <span class="sh">"</span><span class="s">your_virustotal_api_key</span><span class="sh">"</span>
+<span class="n">VIRUSTOTAL_BASE_URL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">https://www.virustotal.com/api/v3</span><span class="sh">"</span>
+
+<span class="k">def</span> <span class="nf">check_ip_virustotal</span><span class="p">(</span><span class="n">ip_address</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">VIRUSTOTAL_BASE_URL</span><span class="si">}</span><span class="s">/ip_addresses/</span><span class="si">{</span><span class="n">ip_address</span><span class="si">}</span><span class="sh">"</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">"</span><span class="s">x-apikey</span><span class="sh">"</span><span class="p">:</span> <span class="n">VIRUSTOTAL_API_KEY</span>
+    <span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="nf">json</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+<span class="c1"># Test the VirusTotal API with an example IP
+</span><span class="n">result</span> <span class="o">=</span> <span class="nf">check_ip_virustotal</span><span class="p">(</span><span class="sh">"</span><span class="s">8.8.8.8</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># Replace with a real IP from your DNS cache
+</span><span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>]]></content><author><name></name></author><category term="project" /><category term="cybersecurity" /><category term="research" /><category term="tutorial" /><category term="analysis" /><category term="malware" /><category term="forensics" /><category term="network-security" /><category term="incident-response" /><summary type="html"><![CDATA[A lightweight monitoring tool that periodically scans a Windows workstation's DNS cache, extracts domains/IPs, checks them against VirusTotal, and alerts/logs on suspicious findings.]]></summary></entry><entry><title type="html">Critical WhatsApp Zero-Click Vulnerability Exploited in Sophisticated Spyware Campaign - A Deeper Dive</title><link href="http://localhost:4000/blog/2025/09/05/Critical-WhatsApp-Zero-Click-Vulnerability-Exploited-in-Sophisticated-Spyware-Campaign-A-Deepe-Dive/" rel="alternate" type="text/html" title="Critical WhatsApp Zero-Click Vulnerability Exploited in Sophisticated Spyware Campaign - A Deeper Dive" /><published>2025-09-05T19:00:00-05:00</published><updated>2025-09-05T19:00:00-05:00</updated><id>http://localhost:4000/blog/2025/09/05/Critical-WhatsApp-Zero-Click-Vulnerability-Exploited-in-Sophisticated-Spyware-Campaign-A-Deepe-Dive</id><content type="html" xml:base="http://localhost:4000/blog/2025/09/05/Critical-WhatsApp-Zero-Click-Vulnerability-Exploited-in-Sophisticated-Spyware-Campaign-A-Deepe-Dive/"><![CDATA[<p>Remember NSO Group? The spyware company that got slapped with a $167 million judgment for hacking 1,400 WhatsApp users back in 2019? Well, someone didn’t get the memo.</p>
+
+<p>Last week, WhatsApp quietly pushed an emergency update to patch <a href="https://nvd.nist.gov/vuln/detail/CVE-2025-55177">CVE-2025-55177</a> – and sent threat notifications to fewer than 200 users with a chilling message: <a href="https://thehackernews.com/2025/08/whatsapp-issues-emergency-update-for.html">“We believe attackers may have targeted you with advanced spyware.”</a></p>
+
+<p>This wasn’t your typically phishing campaign. This was a zero-click attack so sophisticated it makes you really want to delete all your “secure” apps and revert to carrier pigeons.</p>
+
+<h2 id="the-two-punch-combo">The Two-Punch Combo</h2>
+
+<p>The attackers pulled off something truly diabolical: they chained two separate zero-day exploits together like a digital one-two punch.</p>
+
+<p>First, they exploited a flaw in WhatsApp’s device sync system (CVE-2025-55177). This vulnerability caused the app to not fully check if a device was allowed to process certain sync messages. Because of this, an attacker could trick the app into loading data from a website link (URL) of their choice on the victim’s device, essentially tricking your iPhone into fetching content from their server. Then they delivered a poisoned image, yes you heard that right, and image, designed to exploit Apple’s ImageIO framework (<a href="https://nvd.nist.gov/vuln/detail/CVE-2025-43300">CVE-2025-43300</a>) – a bug Apple described as being used in “extremely sophisticated attacks.”</p>
+
+<p>No clicking required. No suspicious links to avoid. Your phone just gets compromised while you’re scrolling through your messages.</p>
+
+<h2 id="the-usual-suspects">The Usual Suspects</h2>
+
+<p>While WhatsApp won’t name names, the attack has all the hallmarks of the commercial spyware industry that’s been having a banner year.</p>
+
+<p>Just this February, <a href="https://www.bbc.com/news/articles/cvgmzdjw24yo">WhatsApp exposed another campaign targeting 90 Italian journalists using Paragon Solutions’ “Graphite” spyware.</a> The backlash was so severe that Paragon actually fired Italy as a customer – though that’s like kicking one person out of a packed nightclub.</p>
+
+<p>This pattern is depressingly familiar, journalists investigating corruption, human rights lawyers, activists exposing abuse. If you’re shining a light where powerful people prefer darkness, congratulations, you might be worth a zero-day.</p>
+
+<h2 id="the-90-day-hunt">The 90-Day Hunt</h2>
+
+<p>This wasn’t a hit-and-run attack by any means. The campaign ran for three months, from late May through August, targeting civil society members with surgical precision. Donncha Ó Cearbhaill from Amnesty International’s Security Lab called it an <a href="https://x.com/DonnchaC/status/1961444710620303653">“advanced spyware campaign”</a>, another way to put this is someone spent serious money to silence specific people.</p>
+
+<p>The technical execution was elegant in its brutality. The vulnerability let attackers abuse WhatsApp’s multi-device feature, making your phone think it needed to sync with their malicious server. Your device was just doing its job. It had no idea it was downloading its own destruction.</p>
+
+<h2 id="democracys-digital-siege">Democracy’s Digital Siege</h2>
+
+<p>Here’s the thing that should terrify you as it gives me that paranoid feeling: this industry is booming. NSO Group’s quarter-billion-dollar judgment was supposed to be a deterrent, but it’s had the opposite effect it seems.</p>
+
+<p>Citizen Lab researchers have documented Paragon’s spyware being deployed across multiple countries, targeting everyone from environmental activists to migration journalists. When ICE is reportedly using these tools for surveillance operations, the line between “law enforcement” and “digital authoritarianism” gets pretty blurry.</p>
+
+<h2 id="the-bigger-picture">The Bigger Picture</h2>
+
+<p>The 200 people who got those threat notifications weren’t random targets, they were chosen because their voices are bigger than mine or yours. Silencing them silences all of us.</p>
+
+<p>We’ve created a world where surveillance capabilities that would make totalitarian regimes jealous can be purchased off the shelf. Every time a journalist can’t communicate securely with sources, every time an activist hesitates before organizing, our freedom and privacy dies a little.</p>
+
+<h2 id="what-now">What Now?</h2>
+
+<p>If you’re thinking “I’m nobody special, why worry?” – you’re missing the point. These attacks succeed because they make everyone a little less free.</p>
+
+<p>Update your apps. Support organizations fighting surveillance abuse. And remember: the next zero-click exploit isn’t a question of if, but when.</p>
+
+<p>The spyware industry just proved they learned nothing from NSO Group’s expensive lesson. The question is: what will come from this incident, and will this only get worse?</p>
+
+<hr />
+
+<p><em>Your WhatsApp is patched now. But the war for digital privacy has barely begun.</em></p>]]></content><author><name></name></author><category term="blog" /><category term="cybersecurity" /><category term="research" /><category term="blog" /><summary type="html"><![CDATA[Remember NSO Group? The spyware company that got slapped with a $167 million judgment for hacking 1,400 WhatsApp users back in 2019? Well, someone didn’t get the memo.]]></summary></entry><entry><title type="html">Test Blog</title><link href="http://localhost:4000/blog/2002/09/09/Test-Blog/" rel="alternate" type="text/html" title="Test Blog" /><published>2002-09-09T00:00:00-05:00</published><updated>2002-09-09T00:00:00-05:00</updated><id>http://localhost:4000/blog/2002/09/09/Test-Blog</id><content type="html" xml:base="http://localhost:4000/blog/2002/09/09/Test-Blog/"><![CDATA[<p>This is a test blog to see if I understand wtf is going on</p>
+
+<p>here is an image</p>
+
+<p><img src="/assets/images/test-blog/Pasted%20image%2020250906153754.png" alt="Image Description" /></p>
+
+<p>This is a test code snippet</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello, World!</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sh">"</span><span class="s">Success</span><span class="sh">"</span>
+</code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">greetUser</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Hello, </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">!`</span><span class="p">);</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nb">echo</span> <span class="s2">"Starting security scan..."</span>
+nmap <span class="nt">-sS</span> target.com
+</code></pre></div></div>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Security Tool"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"features"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"scan"</span><span class="p">,</span><span class="w"> </span><span class="s2">"report"</span><span class="p">,</span><span class="w"> </span><span class="s2">"alert"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<hr />
+
+<p><strong>Tags:</strong> #cybersecurity #research #tutorial</p>
+
+<p><strong>Related Posts:</strong></p>
+<ul>
+  <li>[[Related Post 1]]</li>
+  <li>[[Related Post 2]]</li>
+</ul>]]></content><author><name></name></author><category term="blog" /><category term="test" /><summary type="html"><![CDATA[This is a test blog]]></summary></entry></feed>

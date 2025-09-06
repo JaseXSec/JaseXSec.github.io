@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page.title %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}</title>
+    <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- SEO -->
+    {% seo %}
+    
+    <!-- Feed -->
+    <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <nav class="nav">
+                <a href="{{ '/' | relative_url }}" class="nav-brand">{{ site.title | escape }}</a>
+                <ul class="nav-menu">
+                    {% unless page.url == '/' or page.url == '/index.html' %}
+                    <li><a href="{{ '/' | relative_url }}">Home</a></li>
+                    {% endunless %}
+                    <li><a href="{{ '/about' | relative_url }}">About Me</a></li>
+                    <li><a href="{{ '/certifications' | relative_url }}">Certifications & Education</a></li>
+                    <li><a href="{{ '/projects-blogs' | relative_url }}">Projects & Blogs</a></li>
+                    <li><a href="https://www.linkedin.com/in/jase-jourdain-2353b6256/" class="linkedin">LinkedIn</a></li>
+                </ul>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        {{ content }}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: <a href="mailto:contact@jasejourdain.com" class="email-link">contact@jasejourdain.com</a></p>
+                    <p>Want a copy of my résumé? Feel free to email me directly.</p>
+                </div>
+                <div class="footer-section">
+                    <p>&copy; {{ 'now' | date: "%Y" }} {{ site.title | escape }}. All rights reserved.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/JaseXSec" target="_blank" rel="noopener">GitHub</a>
+                        <a href="https://www.linkedin.com/in/jase-jourdain-2353b6256/" target="_blank" rel="noopener">LinkedIn</a>
+                        <a href="https://x.com/JaseCyberSec" target="_blank" rel="noopener">X</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+</body>
+</html>

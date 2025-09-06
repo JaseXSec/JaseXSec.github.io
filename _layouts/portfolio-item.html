@@ -1,0 +1,95 @@
+---
+layout: default
+---
+
+<article class="portfolio-detail">
+    <header class="portfolio-header">
+        <div class="container">
+            <h1 class="portfolio-title">{{ page.title | escape }}</h1>
+            <div class="portfolio-meta">
+                {% if page.date %}
+                <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %Y" }}</time>
+                {% endif %}
+                {% if page.client %}
+                <span class="portfolio-client">Client: {{ page.client }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    {% if page.image %}
+    <div class="portfolio-hero">
+        <div class="container">
+            <img src="{{ page.image | relative_url }}" alt="{{ page.title }}" class="hero-image">
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="portfolio-content">
+        <div class="container">
+            <div class="portfolio-main">
+                <div class="content">
+                    {{ content }}
+                </div>
+            </div>
+            
+            <aside class="portfolio-sidebar">
+                <div class="sidebar-section">
+                    <h3>Project Details</h3>
+                    <ul class="project-details">
+                        {% if page.technologies %}
+                        <li>
+                            <strong>Technologies:</strong>
+                            <span>{{ page.technologies | join: ', ' }}</span>
+                        </li>
+                        {% endif %}
+                        {% if page.duration %}
+                        <li>
+                            <strong>Duration:</strong>
+                            <span>{{ page.duration }}</span>
+                        </li>
+                        {% endif %}
+                        {% if page.role %}
+                        <li>
+                            <strong>Role:</strong>
+                            <span>{{ page.role }}</span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                {% if page.tags.size > 0 %}
+                <div class="sidebar-section">
+                    <h3>Tags</h3>
+                    <div class="tags">
+                        {% for tag in page.tags %}
+                        <span class="tag">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if page.links %}
+                <div class="sidebar-section">
+                    <h3>Links</h3>
+                    <ul class="project-links">
+                        {% for link in page.links %}
+                        <li><a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </aside>
+        </div>
+    </div>
+
+    <footer class="portfolio-footer">
+        <div class="container">
+            <div class="portfolio-navigation">
+                <a href="{{ '/projects-blogs' | relative_url }}" class="back-button">
+                    <span>← Back to Write-ups and Blogs</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+</article>
