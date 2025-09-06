@@ -33,7 +33,8 @@ It accepts up to 20 URLs, displays the results in a table, and can export them t
 
 I scanned 9 popular web apps and tools using **HeaderHawk** — these aren't banks or government sites, but tools many people use every day, like Notion, Medium, and Trello. These sites were selected by none other than ChatGPT, so if you don't like it, take it up with the AI gods.
 ![Image Description]({{ '/assets/images/header-hawk/Pasted image 20250528204815.png' | relative_url }})
-### Here’s what surprised me:
+
+### Here's what surprised me:
 
 | Website | Content-Security-Policy | X-Frame-Options | HSTS | Referrer-Policy |
 |---------|------------------------|-----------------|------|-----------------|
@@ -46,6 +47,7 @@ I scanned 9 popular web apps and tools using **HeaderHawk** — these aren't ban
 | npmjs.com | Limited CSP | DENY | Present | Missing |
 | medium.com | Frame restriction only | Missing | Present | Missing |
 | trello.com | Missing | SAMEORIGIN | Present | Good |
+
 ![Image Description]({{ '/assets/images/header-hawk/Pasted image 20250528204908.png' | relative_url }})
 doesn't that cli tool just look so good? 😉
 
@@ -78,13 +80,13 @@ These headers are **simple configuration settings** that websites can add to imp
 - **Accidental data leaks** — like sharing private URLs through the referrer
 
 
-Yet most of the web isn’t using them properly.
+Yet most of the web isn't using them properly.
 
 
 
 # Your Turn!!
 
-Want to try it yourself? [HeaderHawk](https://github.com/JaseXSec/HeaderHawk) is open source and easy to run. Scan your favorite sites, your own projects, or even company web apps. You might be surprised what’s missing.
+Want to try it yourself? [HeaderHawk](https://github.com/JaseXSec/HeaderHawk) is open source and easy to run. Scan your favorite sites, your own projects, or even company web apps. You might be surprised what's missing.
 
 
 
