@@ -3,7 +3,7 @@ title: "Jase Jourdain - Cybersecurity Portfolio"
 email: your.email@example.com
 description: "Cybersecurity professional specializing in penetration testing, incident response, and security architecture. Sharing insights and research in the field of information security."
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://yourdomain.com" # Replace with your actual domain
+url: "https://JaseXSec.github.io" # Your GitHub Pages URL
 
 # Build settings
 markdown: kramdown
