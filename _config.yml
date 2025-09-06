@@ -38,7 +38,7 @@ defaults:
     values:
       layout: "default"
 
-# Plugins
+# Plugins (included in github-pages gem)
 plugins:
   - jekyll-feed
   - jekyll-sitemap

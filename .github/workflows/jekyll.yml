@@ -33,20 +33,10 @@ jobs:
         with:
           ruby-version: '3.1'
           bundler-cache: true
-      - name: Install dependencies
-        run: bundle install
       - name: Setup Pages
         uses: actions/configure-pages@v4
-      - name: Determine URL
-        id: determine-url
-        run: |
-          if [[ ${{ github.event_name }} == "push" ]]; then
-            echo "url_path=" >> $GITHUB_OUTPUT
-          else
-            echo "url_path=${{ github.event.inputs.url_path }}" >> $GITHUB_OUTPUT
-          fi
       - name: Build with Jekyll
-        run: bundle exec jekyll build --baseurl "${{ steps.determine-url.outputs.url_path }}"
+        run: bundle exec jekyll build
         env:
           JEKYLL_ENV: production
       - name: Upload artifact
