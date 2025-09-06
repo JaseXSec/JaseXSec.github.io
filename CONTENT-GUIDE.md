@@ -93,8 +93,8 @@ Supported languages: `python`, `javascript`, `bash`, `json`, `yaml`, `html`, `cs
 
 ### **After Conversion:**
 ```markdown
-![Image Description]({{ '/assets/images/your-post-name/image-name.png' | relative_url }})
-![Figure 1: Caption]({{ '/assets/images/your-post-name/image.png' | relative_url }}) *Figure 1: Caption*
+![Image Description]({% raw %}{{ '/assets/images/your-post-name/image-name.png' | relative_url }}{% endraw %})
+![Figure 1: Caption]({% raw %}{{ '/assets/images/your-post-name/image.png' | relative_url }}{% endraw %}) *Figure 1: Caption*
 ```
 
 ## 🔧 Manual Conversion (If Script Fails)
@@ -104,11 +104,11 @@ If the conversion script doesn't work:
 1. **Copy** your `.md` file to `_posts/YYYY-MM-DD-title.md`
 2. **Create folder** `assets/images/your-post-name/`
 3. **Copy images** to that folder
-4. **Find & Replace** in your markdown:**
+4. **Find & Replace** in your markdown:
    - Find: `![[`
-   - Replace: `![Image Description]({{ '/assets/images/your-post-name/`
+   - Replace: `![Image Description]({% raw %}{{ '/assets/images/your-post-name/{% endraw %}`
    - Find: `]]`
-   - Replace: `' | relative_url }})`
+   - Replace: `{% raw %}' | relative_url }}{% endraw %})`
 
 ## ✅ Final Checklist
 
@@ -144,7 +144,7 @@ Portfolio website/
 
 **Images not displaying?**
 - Check the image folder exists in `assets/images/`
-- Verify the image syntax uses `{{ '/assets/images/...' | relative_url }}`
+- Verify the image syntax uses `{% raw %}{{ '/assets/images/...' | relative_url }}{% endraw %}`
 
 **Code blocks not highlighting?**
 - Make sure you're using triple backticks with language names
