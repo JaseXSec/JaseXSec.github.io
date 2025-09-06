@@ -1,0 +1,61 @@
+# Site settings
+title: "Jase Jourdain - Cybersecurity Portfolio"
+email: your.email@example.com
+description: "Cybersecurity professional specializing in penetration testing, incident response, and security architecture. Sharing insights and research in the field of information security."
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://yourdomain.com" # Replace with your actual domain
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: /:categories/:year/:month/:day/:title/
+
+# Rouge syntax highlighting settings
+rouge:
+  theme: "monokai"
+  css_class: "highlight"
+
+# Collections
+collections:
+  portfolio:
+    output: true
+    permalink: /:collection/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "portfolio"
+    values:
+      layout: "portfolio-item"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - obsidian-vault/
+  - _posts_backup/
+  - obsidian-blog-template.md
+  - obsidian-project-template.md
+  - _blog-template.md
+  - _project-template.md

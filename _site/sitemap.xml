@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>http://localhost:4000/blog/2002/09/09/Test-Blog/</loc>
+<lastmod>2002-09-09T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/blog/2025/09/05/Critical-WhatsApp-Zero-Click-Vulnerability-Exploited-in-Sophisticated-Spyware-Campaign-A-Deepe-Dive/</loc>
+<lastmod>2025-09-05T19:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/project/2025/09/05/dns-cache-monitoring/</loc>
+<lastmod>2025-09-05T19:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/about/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/certifications/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/projects-blogs/</loc>
+</url>
+</urlset>

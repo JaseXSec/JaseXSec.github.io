@@ -1,0 +1,49 @@
+---
+layout: default
+---
+
+<article class="post">
+    <header class="post-header">
+        <div class="container">
+            <h1 class="post-title">{{ page.title | escape }}</h1>
+            <div class="post-meta">
+                {% if page.date %}
+                <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %d, %Y" }}</time>
+                {% endif %}
+                {% if page.categories.size > 0 %}
+                <span class="post-category">{{ page.categories | first }}</span>
+                {% endif %}
+                {% if page.author %}
+                <span class="post-author">by {{ page.author }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="post-content">
+        <div class="container">
+            {{ content }}
+        </div>
+    </div>
+
+    <footer class="post-footer">
+        <div class="container">
+            <div class="post-tags">
+                {% if page.tags.size > 0 %}
+                <h4>Tags:</h4>
+                <div class="tags">
+                    {% for tag in page.tags %}
+                    <span class="tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="post-navigation">
+                <a href="{{ '/projects-blogs' | relative_url }}" class="back-button">
+                    <span>← Back to Write-ups and Blogs</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+</article>
