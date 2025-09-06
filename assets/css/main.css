@@ -1138,15 +1138,28 @@ table {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  table-layout: fixed; /* Fixed layout for better column control */
+  min-width: 800px; /* Minimum width to prevent cramping */
 }
 
 th, td {
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.5rem;
   text-align: left;
+  border-right: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
   color: var(--text-color);
+  vertical-align: top;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
+
+/* Column width control */
+th:nth-child(1), td:nth-child(1) { width: 15%; } /* Website */
+th:nth-child(2), td:nth-child(2) { width: 25%; } /* Content-Security-Policy */
+th:nth-child(3), td:nth-child(3) { width: 15%; } /* X-Frame-Options */
+th:nth-child(4), td:nth-child(4) { width: 20%; } /* HSTS */
+th:nth-child(5), td:nth-child(5) { width: 25%; } /* Referrer-Policy */
 
 th {
   background: var(--bg-hover);
@@ -1154,8 +1167,11 @@ th {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   border-bottom: 2px solid var(--primary-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 tr:hover {
@@ -1166,19 +1182,56 @@ tr:last-child td {
   border-bottom: none;
 }
 
+/* Remove right border from last column */
+th:last-child, td:last-child {
+  border-right: none;
+}
+
+/* Table wrapper for horizontal scrolling */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 2rem 0;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+}
+
 /* Responsive table */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   table {
     font-size: 0.8rem;
+    min-width: 700px;
   }
   
   th, td {
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem 0.4rem;
   }
   
-  /* Make table horizontally scrollable on mobile */
-  .table-wrapper {
-    overflow-x: auto;
-    margin: 2rem 0;
+  th {
+    font-size: 0.7rem;
   }
+}
+
+@media (max-width: 768px) {
+  table {
+    font-size: 0.75rem;
+    min-width: 600px;
+  }
+  
+  th, td {
+    padding: 0.4rem 0.3rem;
+  }
+  
+  th {
+    font-size: 0.65rem;
+  }
+}
+
+/* Code styling within tables */
+table code {
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  padding: 0.1rem 0.3rem;
+  font-size: 0.8em;
+  color: var(--accent-color);
 }

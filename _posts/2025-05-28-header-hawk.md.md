@@ -36,6 +36,8 @@ I scanned 9 popular web apps and tools using **HeaderHawk** — these aren't ban
 
 ### Here's what surprised me:
 
+<div class="table-wrapper">
+
 | Website | Content-Security-Policy | X-Frame-Options | HSTS | Referrer-Policy |
 |---------|------------------------|-----------------|------|-----------------|
 | notion.so | Missing | Missing | Present | Missing |
@@ -47,6 +49,8 @@ I scanned 9 popular web apps and tools using **HeaderHawk** — these aren't ban
 | npmjs.com | Limited CSP | DENY | Present | Missing |
 | medium.com | Frame restriction only | Missing | Present | Missing |
 | trello.com | Missing | SAMEORIGIN | Present | Good |
+
+</div>
 
 ![Image Description]({{ '/assets/images/header-hawk/Pasted image 20250528204908.png' | relative_url }})
 doesn't that cli tool just look so good? 😉
