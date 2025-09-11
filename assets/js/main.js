@@ -59,17 +59,51 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Convert Obsidian callouts to HTML
+    console.log('Starting callout conversion...');
     convertCallouts();
 });
 
 // Function to convert Obsidian callout syntax to HTML
 function convertCallouts() {
-    const calloutRegex = /^> \[!(\w+)\]\s*(.*?)$/gm;
     const content = document.querySelector('.post-content, .main-content');
     
-    if (!content) return;
+    if (!content) {
+        console.log('No content found for callout conversion');
+        return;
+    }
     
-    // Find all callout blocks
+    console.log('Content found for callout conversion:', content);
+    
+    // Find all paragraphs that contain callout syntax
+    const paragraphs = content.querySelectorAll('p');
+    console.log('Found paragraphs:', paragraphs.length);
+    
+    paragraphs.forEach((paragraph, index) => {
+        const text = paragraph.textContent;
+        console.log(`Checking paragraph ${index}:`, text.substring(0, 100) + '...');
+        
+        const calloutMatch = text.match(/^> \[!(\w+)\]\s*(.*?)$/);
+        console.log('Callout match result:', calloutMatch);
+        
+        if (calloutMatch) {
+            const calloutType = calloutMatch[1].toLowerCase();
+            const calloutTitle = calloutMatch[2] || calloutType.charAt(0).toUpperCase() + calloutType.slice(1);
+            
+            console.log('Creating callout:', calloutType, calloutTitle);
+            
+            // Create callout HTML
+            const calloutHTML = createCalloutHTML(calloutType, calloutTitle, '');
+            
+            // Replace the paragraph with callout
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = calloutHTML;
+            paragraph.parentNode.replaceChild(wrapper, paragraph);
+            
+            console.log('Callout replaced successfully');
+        }
+    });
+    
+    // Also check for multi-line callouts in text nodes
     const walker = document.createTreeWalker(
         content,
         NodeFilter.SHOW_TEXT,
@@ -85,50 +119,19 @@ function convertCallouts() {
     
     textNodes.forEach(textNode => {
         const text = textNode.textContent;
-        if (text.includes('[!') && text.includes(']')) {
-            const lines = text.split('\n');
-            let newHTML = '';
-            let inCallout = false;
-            let calloutType = '';
-            let calloutTitle = '';
-            let calloutContent = '';
+        if (text.includes('[!') && text.includes(']') && text.startsWith('> ')) {
+            const calloutMatch = text.match(/^> \[!(\w+)\]\s*(.*?)$/);
             
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i];
-                const calloutMatch = line.match(/^> \[!(\w+)\]\s*(.*?)$/);
+            if (calloutMatch) {
+                const calloutType = calloutMatch[1].toLowerCase();
+                const calloutTitle = calloutMatch[2] || calloutType.charAt(0).toUpperCase() + calloutType.slice(1);
                 
-                if (calloutMatch) {
-                    // Close previous callout if open
-                    if (inCallout) {
-                        newHTML += createCalloutHTML(calloutType, calloutTitle, calloutContent);
-                    }
-                    
-                    // Start new callout
-                    inCallout = true;
-                    calloutType = calloutMatch[1].toLowerCase();
-                    calloutTitle = calloutMatch[2] || calloutType.charAt(0).toUpperCase() + calloutType.slice(1);
-                    calloutContent = '';
-                } else if (inCallout && line.startsWith('> ')) {
-                    // Add content to current callout
-                    calloutContent += (calloutContent ? '\n' : '') + line.substring(2);
-                } else if (inCallout && !line.startsWith('>')) {
-                    // End of callout
-                    newHTML += createCalloutHTML(calloutType, calloutTitle, calloutContent);
-                    inCallout = false;
-                    newHTML += line + '\n';
-                } else {
-                    newHTML += line + '\n';
-                }
-            }
-            
-            // Close final callout if open
-            if (inCallout) {
-                newHTML += createCalloutHTML(calloutType, calloutTitle, calloutContent);
-            }
-            
-            if (newHTML !== text) {
+                // Create callout HTML
+                const calloutHTML = createCalloutHTML(calloutType, calloutTitle, '');
+                
+                // Replace the text node with callout
                 const wrapper = document.createElement('div');
-                wrapper.innerHTML = newHTML;
+                wrapper.innerHTML = calloutHTML;
                 textNode.parentNode.replaceChild(wrapper, textNode);
             }
         }
