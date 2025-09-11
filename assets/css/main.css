@@ -15,6 +15,85 @@
   height: auto;
 }
 
+/* Obsidian Callout Styling */
+.callout {
+  border-left: 4px solid;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  background: var(--bg-card);
+  border-color: var(--primary-color);
+}
+
+.callout-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.callout-content {
+  margin: 0;
+}
+
+/* Callout Types */
+.callout-success {
+  border-color: #00ff00;
+  background: rgba(0, 255, 0, 0.1);
+}
+
+.callout-warning {
+  border-color: #ffaa00;
+  background: rgba(255, 170, 0, 0.1);
+}
+
+.callout-error {
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+}
+
+.callout-info {
+  border-color: #4488ff;
+  background: rgba(68, 136, 255, 0.1);
+}
+
+.callout-note {
+  border-color: var(--primary-color);
+  background: rgba(139, 92, 246, 0.1);
+}
+
+/* Callout Icons */
+.callout-icon {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.callout-success .callout-icon::before {
+  content: "✓";
+  color: #00ff00;
+}
+
+.callout-warning .callout-icon::before {
+  content: "⚠";
+  color: #ffaa00;
+}
+
+.callout-error .callout-icon::before {
+  content: "✗";
+  color: #ff4444;
+}
+
+.callout-info .callout-icon::before {
+  content: "ℹ";
+  color: #4488ff;
+}
+
+.callout-note .callout-icon::before {
+  content: "📝";
+  color: var(--primary-color);
+}
+
 /* Variables */
 :root {
   --primary-color: #8b5cf6;  /* Blueish purple accent like terminal */
