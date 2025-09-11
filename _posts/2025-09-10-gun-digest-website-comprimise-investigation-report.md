@@ -215,7 +215,7 @@ SHA256: D4C9D9027326271A89CE51FCAF328ED673F17BE33469FF979E8AB8DD501E664F
 
 Through Falcon detection, my own lab work, and sandbox analysis, I reconstructed the entire attack chain:
 
-```mermaid
+<div class="mermaid">
 graph TD
     A[gundigest.com] --> B[gunvalues.gundigest.com/captcha.php]
     B --> C[loader injects ajax.php]
@@ -228,7 +228,7 @@ graph TD
     I --> J[second stage malware]
     J --> K[Rhadamanthys, RAT, HijackLoader]
     K --> L[multi-C2 infrastructure]
-```
+</div>
 
 
 
