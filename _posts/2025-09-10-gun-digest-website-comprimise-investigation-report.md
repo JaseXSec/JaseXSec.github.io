@@ -236,6 +236,8 @@ graph TD
 
 ### [Any.Run Report](https://any.run/report/d4c9d9027326271a89ce51fcaf328ed673f17be33469ff979e8ab8dd501e664f/f9336409-d7a5-4a03-a9fc-a70473472afd)
 
+### Gun Digest has been notified.
+
 ---
 
 **Prepared by:** [Jase Jourdain]  
