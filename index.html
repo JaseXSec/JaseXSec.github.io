@@ -15,7 +15,7 @@ layout: default
         <h2 class="section-title"># Recent Blogs & Projects</h2>
         
         <div class="recent-posts">
-            {% for post in site.posts limit:6 %}
+            {% for post in site.posts limit:3 %}
             <div class="post-item">
                 <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
                 <p class="post-meta">{{ post.date | date: "%B %d, %Y" }} | 
