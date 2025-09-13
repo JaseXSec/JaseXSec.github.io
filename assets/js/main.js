@@ -64,17 +64,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Function to convert Obsidian callout syntax to HTML
 function convertCallouts() {
+    console.log('Starting callout conversion...');
+    
     const content = document.querySelector('.post-content');
     
     if (!content) {
+        console.log('No post-content found');
         return;
     }
     
+    console.log('Found post-content:', content);
+    
     // Process the entire content as HTML
     let html = content.innerHTML;
+    console.log('Original HTML length:', html.length);
+    
+    // Look for callout patterns in the HTML
+    const calloutPattern = /&gt; \[!(\w+)\]\s*(.*?)(?=&lt;|$)/g;
+    const matches = html.match(calloutPattern);
+    console.log('Found callout matches:', matches);
     
     // Replace callout syntax with HTML
-    html = html.replace(/^> \[!(\w+)\]\s*(.*?)$/gm, (match, type, title) => {
+    html = html.replace(calloutPattern, (match, type, title) => {
+        console.log('Processing callout:', type, title);
         const calloutType = type.toLowerCase();
         const calloutTitle = title.trim() || calloutType.charAt(0).toUpperCase() + calloutType.slice(1);
         
@@ -87,5 +99,7 @@ function convertCallouts() {
         </div>`;
     });
     
+    console.log('HTML after replacement length:', html.length);
     content.innerHTML = html;
+    console.log('Callout conversion complete');
 }
