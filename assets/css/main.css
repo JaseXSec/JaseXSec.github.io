@@ -1024,13 +1024,18 @@ a:hover {
   position: relative;
 }
 
+/* Ensure the highlighter-rouge container is positioned relative for absolute positioning */
+.highlighter-rouge {
+  position: relative;
+}
+
 /* Language label in top right corner - hidden by default */
 .highlight::before {
   display: none;
 }
 
 /* Language label styling - target the parent div with language class */
-.highlighter-rouge[class*="language-"] .highlight::before {
+.highlighter-rouge[class*="language-"]::before {
   display: block;
   position: absolute;
   top: 8px;
@@ -1044,60 +1049,60 @@ a:hover {
   font-family: 'Courier New', monospace;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  z-index: 1;
+  z-index: 10;
   opacity: 0.9;
 }
 
 /* Specific language extractions */
-.highlighter-rouge.language-python .highlight::before { content: "PYTHON"; }
-.highlighter-rouge.language-javascript .highlight::before { content: "JAVASCRIPT"; }
-.highlighter-rouge.language-js .highlight::before { content: "JAVASCRIPT"; }
-.highlighter-rouge.language-html .highlight::before { content: "HTML"; }
-.highlighter-rouge.language-css .highlight::before { content: "CSS"; }
-.highlighter-rouge.language-json .highlight::before { content: "JSON"; }
-.highlighter-rouge.language-yaml .highlight::before { content: "YAML"; }
-.highlighter-rouge.language-yml .highlight::before { content: "YAML"; }
-.highlighter-rouge.language-bash .highlight::before { content: "BASH"; }
-.highlighter-rouge.language-shell .highlight::before { content: "SHELL"; }
-.highlighter-rouge.language-powershell .highlight::before { content: "POWERSHELL"; }
-.highlighter-rouge.language-python3 .highlight::before { content: "PYTHON"; }
-.highlighter-rouge.language-java .highlight::before { content: "JAVA"; }
-.highlighter-rouge.language-cpp .highlight::before { content: "C++"; }
-.highlighter-rouge.language-c .highlight::before { content: "C"; }
-.highlighter-rouge.language-ruby .highlight::before { content: "RUBY"; }
-.highlighter-rouge.language-php .highlight::before { content: "PHP"; }
-.highlighter-rouge.language-sql .highlight::before { content: "SQL"; }
-.highlighter-rouge.language-xml .highlight::before { content: "XML"; }
-.highlighter-rouge.language-markdown .highlight::before { content: "MARKDOWN"; }
-.highlighter-rouge.language-dockerfile .highlight::before { content: "DOCKERFILE"; }
-.highlighter-rouge.language-docker .highlight::before { content: "DOCKER"; }
-.highlighter-rouge.language-nginx .highlight::before { content: "NGINX"; }
-.highlighter-rouge.language-apache .highlight::before { content: "APACHE"; }
-.highlighter-rouge.language-http .highlight::before { content: "HTTP"; }
-.highlighter-rouge.language-https .highlight::before { content: "HTTPS"; }
-.highlighter-rouge.language-ssh .highlight::before { content: "SSH"; }
-.highlighter-rouge.language-ftp .highlight::before { content: "FTP"; }
-.highlighter-rouge.language-smtp .highlight::before { content: "SMTP"; }
-.highlighter-rouge.language-dns .highlight::before { content: "DNS"; }
-.highlighter-rouge.language-ldap .highlight::before { content: "LDAP"; }
-.highlighter-rouge.language-kerberos .highlight::before { content: "KERBEROS"; }
-.highlighter-rouge.language-ntlm .highlight::before { content: "NTLM"; }
-.highlighter-rouge.language-oauth .highlight::before { content: "OAUTH"; }
-.highlighter-rouge.language-saml .highlight::before { content: "SAML"; }
-.highlighter-rouge.language-jwt .highlight::before { content: "JWT"; }
-.highlighter-rouge.language-token .highlight::before { content: "TOKEN"; }
-.highlighter-rouge.language-api .highlight::before { content: "API"; }
-.highlighter-rouge.language-rest .highlight::before { content: "REST"; }
-.highlighter-rouge.language-graphql .highlight::before { content: "GRAPHQL"; }
-.highlighter-rouge.language-soap .highlight::before { content: "SOAP"; }
-.highlighter-rouge.language-toml .highlight::before { content: "TOML"; }
-.highlighter-rouge.language-ini .highlight::before { content: "INI"; }
-.highlighter-rouge.language-conf .highlight::before { content: "CONFIG"; }
-.highlighter-rouge.language-config .highlight::before { content: "CONFIG"; }
-.highlighter-rouge.language-log .highlight::before { content: "LOG"; }
-.highlighter-rouge.language-text .highlight::before { content: "TEXT"; }
-.highlighter-rouge.language-plain .highlight::before { content: "TEXT"; }
-.highlighter-rouge.language-none .highlight::before { content: "TEXT"; }
+.highlighter-rouge.language-python::before { content: "PYTHON"; }
+.highlighter-rouge.language-javascript::before { content: "JAVASCRIPT"; }
+.highlighter-rouge.language-js::before { content: "JAVASCRIPT"; }
+.highlighter-rouge.language-html::before { content: "HTML"; }
+.highlighter-rouge.language-css::before { content: "CSS"; }
+.highlighter-rouge.language-json::before { content: "JSON"; }
+.highlighter-rouge.language-yaml::before { content: "YAML"; }
+.highlighter-rouge.language-yml::before { content: "YAML"; }
+.highlighter-rouge.language-bash::before { content: "BASH"; }
+.highlighter-rouge.language-shell::before { content: "SHELL"; }
+.highlighter-rouge.language-powershell::before { content: "POWERSHELL"; }
+.highlighter-rouge.language-python3::before { content: "PYTHON"; }
+.highlighter-rouge.language-java::before { content: "JAVA"; }
+.highlighter-rouge.language-cpp::before { content: "C++"; }
+.highlighter-rouge.language-c::before { content: "C"; }
+.highlighter-rouge.language-ruby::before { content: "RUBY"; }
+.highlighter-rouge.language-php::before { content: "PHP"; }
+.highlighter-rouge.language-sql::before { content: "SQL"; }
+.highlighter-rouge.language-xml::before { content: "XML"; }
+.highlighter-rouge.language-markdown::before { content: "MARKDOWN"; }
+.highlighter-rouge.language-dockerfile::before { content: "DOCKERFILE"; }
+.highlighter-rouge.language-docker::before { content: "DOCKER"; }
+.highlighter-rouge.language-nginx::before { content: "NGINX"; }
+.highlighter-rouge.language-apache::before { content: "APACHE"; }
+.highlighter-rouge.language-http::before { content: "HTTP"; }
+.highlighter-rouge.language-https::before { content: "HTTPS"; }
+.highlighter-rouge.language-ssh::before { content: "SSH"; }
+.highlighter-rouge.language-ftp::before { content: "FTP"; }
+.highlighter-rouge.language-smtp::before { content: "SMTP"; }
+.highlighter-rouge.language-dns::before { content: "DNS"; }
+.highlighter-rouge.language-ldap::before { content: "LDAP"; }
+.highlighter-rouge.language-kerberos::before { content: "KERBEROS"; }
+.highlighter-rouge.language-ntlm::before { content: "NTLM"; }
+.highlighter-rouge.language-oauth::before { content: "OAUTH"; }
+.highlighter-rouge.language-saml::before { content: "SAML"; }
+.highlighter-rouge.language-jwt::before { content: "JWT"; }
+.highlighter-rouge.language-token::before { content: "TOKEN"; }
+.highlighter-rouge.language-api::before { content: "API"; }
+.highlighter-rouge.language-rest::before { content: "REST"; }
+.highlighter-rouge.language-graphql::before { content: "GRAPHQL"; }
+.highlighter-rouge.language-soap::before { content: "SOAP"; }
+.highlighter-rouge.language-toml::before { content: "TOML"; }
+.highlighter-rouge.language-ini::before { content: "INI"; }
+.highlighter-rouge.language-conf::before { content: "CONFIG"; }
+.highlighter-rouge.language-config::before { content: "CONFIG"; }
+.highlighter-rouge.language-log::before { content: "LOG"; }
+.highlighter-rouge.language-text::before { content: "TEXT"; }
+.highlighter-rouge.language-plain::before { content: "TEXT"; }
+.highlighter-rouge.language-none::before { content: "TEXT"; }
 
 /* Adjust padding to account for language label */
 .highlight pre {
